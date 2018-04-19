@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" href='img/fav.png' type="image/x-icon" />
+        <link rel="stylesheet" href="css/page.css">
+
+        <meta charset="utf-8">        
+        <title>RDF Visualizer</title>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"> <!-- Tell the browser to be responsive to screen width -->
+
+        <!-- ******************* CSS *****************************-->
+        <link rel="stylesheet" href="css/libs/bootstrap/css/bootstrap.min.css">  <!-- Bootstrap 3.3.5 -->
+        <link rel="stylesheet" href="css/libs/font-awesome.min.css"> <!-- Font Awesome -->
+        <link rel="stylesheet" href="css/libs/AdminLTE.min.css"> <!-- Theme style -->        
+        <link rel="stylesheet" href="css/libs/skins/_all-skins.min.css">  
+        <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"> <!-- bootstrap wysihtml5 - text editor -->              
+        <link rel="stylesheet" href="plugins/jq-treeview/jquery.treeview.css"> <!-- treeview jquery -->                       
+    </head>
+
+    <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+
+        <div class="wrapper">
+            <header class="main-header">
+                <!-- Logo -->
+                <a href="#" class="logo">
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini"><b></b></span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg"><b><!--RDF--></b><!-- Visualizer--></span>
+                </a>
+                <!-- Header Navbar: style can be found in header.less -->
+                <nav class="navbar navbar-static-top">                  
+                    <!-- Sidebar toggle button-->
+          
+                    <h3 class='header' style='margin-bottom: 0px; margin-top: 12px; color:#f7f1f1; margin-left: 40%'><img alt="#" style='padding-right: 30px;' src='img/Title-iconl.png'>RDF Visualizer</h3>                                   
+                </nav>                
+            </header>
+            <!-- ***************************   MODALS   **************************************-->  
+            <!--    ********************* TEXT *********************  -->
+            <div  class="modal fade" id="text_Modal" role="dialog">
+                <div class="modal-dialog">    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 id="text_modtitle" class="modal-title"></h4>
+                        </div> 
+
+                        <div class="modal-body">
+                            <div style="margin-bottom: 10px;" id="text_wraper">                  
+                            </div>                
+                        </div> 
+                        <div id="expand_list_footer0" class="modal-footer">
+                            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                            <!-- <button type="button" class="btn btn-primary">Insert selected entries to visualizer</button>-->
+                        </div>                      
+                    </div>     
+                </div>
+            </div>
+            <!--    ********************* LIST *********************  -->
+            <div  class="modal fade" id="list_showHide" role="dialog">
+                <div class="modal-dialog">    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 id="modtitle" class="modal-title"></h4>
+                        </div> 
+                        <div class="modal-body" style="padding: 25px 31px 10px 0px; max-height: 560px;">
+                            <div style="margin-bottom: 10px;">
+                                <input style="margin-left: 64px;" type="checkbox" id="checkAll"> Select All  
+                                <input style="width:75%; margin-left: 5px;" placeholder="Search list" id="box" type="text" />
+                            </div>
+                            <ul id="nav" class="dropdown" style="max-height:500px;">
+                                <li class="dir">
+                                    <ul style="padding-left: 20px; list-style-type: none;" class="navList dropdown" id="to_Add"></ul>
+                                </li>
+                            </ul>
+                        </div> 
+                        <div id="expand_list_footer" class="modal-footer">
+                            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                            <!-- <button type="button" class="btn btn-primary">Insert selected entries to visualizer</button>-->
+                        </div>                      
+                    </div>     
+                </div>
+            </div>
+            <!--    ********************* ********************************  -->
+            <!--    ********************* MODAL copy to clipboard *********************  -->
+            <div class="modal fade" id="copy_to_clipboard" role="dialog">
+                <div class="modal-dialog">    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div style="background-color: #D5E0C6;" class="modal-header">
+
+                            <h4 class="modal-title">Successfully copied !</h4>
+                        </div>                                
+                    </div>
+                </div>     
+            </div>
+            <!--    ********************* MODAL no data *********************  -->
+            <div class="modal fade" id="noMoreData" role="dialog">
+                <div class="modal-dialog">    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">No more Data</h4>
+                        </div>        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+            <!--    ********************* Insert Valid Subject *********************  -->
+            <div class="modal fade" id="invalidSubject" role="dialog">
+                <div class="modal-dialog">    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Insert a valid subject</h4>
+                        </div>        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+            <!--    ********************* path of selected item *********************  -->
+            <div class="modal fade" id="path_of_selection" role="dialog">
+                <div class="modal-dialog">    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Path of selected element</h4>
+                        </div> 
+                        <div id="selected_path" class="modal-body">                            
+                            <h4></h4>                                                   
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+            <!--    ********************* Check properties file *********************  -->
+            <div class="modal fade" id="fix_properties_xml" role="dialog">
+                <div class="modal-dialog">    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Define the location of properties.xml in config.properties file</h4>
+                        </div>                          
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+            <!--    ********************* Check properties file *********************  -->
+            <div class="modal fade" id="check_configuration" role="dialog">
+                <div class="modal-dialog">    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Check config.properties file</h4>
+                        </div>        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+            <!--    ********************* No label modal *********************  -->
+            <div class="modal fade" id="no_label" role="dialog">
+                <div class="modal-dialog">    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">The given subject has no label</h4>
+                        </div>        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+            <!--    ********************* MODAL thumb *********************  -->
+            <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content"> 
+                        <div class="modal-header">                            
+                            <button  type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 id="gallery_header" class="modal-title">Image Gallery</h4>
+                        </div>
+                        <div class="modal-body">                            
+                            <div id="gallery" class="carousel slide" data-interval="false">
+                                <div id="start_carusel" class="carousel-inner">
+                                    <div  class="item active">
+                                        <img alt="#" src="#" class="imagepreview" style="width: 100%;" >
+                                    </div>                                    
+                                </div>                                
+                            </div>                                                        
+                        </div>
+                    </div>
+                </div>
+            </div>                 
+            <!--***************************   HOME   **************************************-->                
+            <div id="pt-main" class="pt-perspective">
+                <div id="home" class="pt-page" >
+                    <!-- Content Wrapper. Contains page content -->
+                    <div class="content-wrapper">
+                        <!-- Content Header (Page header) -->
+                        <section class="content-header">
+                            <h1 style="font-size:18px; color: white;">Model Overview<small></small></h1>
+                            <!-- <ol class="breadcrumb">
+                                 <li><i class="fa fa-home"></i> Home</li>
+                             </ol> -->
+                        </section>
+                        <!-- Main content -->
+                        <section class="content">
+                            <!-- Small boxes (Stat box) -->                          
+                            <!-- Main row -->
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <!-- jQuery Knob -->
+                                    <div class="box box-solid">
+
+                                        <div id="percOverview" class="box-body">
+                                            <!-- ****************************************************************************** -->
+                                            <div class='col-xs-12'>             
+                                                
+
+
+                                                <div id="navigator_view" style="padding-top: 10px; display:none;">
+                                                    <div id='new_tab_buttons' style='display:none;'>
+                                                        <button style="margin-bottom:5px;"  class ='btn btn-default btn-xs' onclick="">Back to source path</button>         
+                                                        <span style="margin-left: 10px; font-size: 12px; ">View path of Subject</span>                                       
+                                                    </div> 
+                                                    <ul id="nav" class="dropdown">
+                                                        <!--  <li class="dir">  -->
+                                                        <ul class="navList dropdown filetree" id="browser" ></ul>
+                                                        <!--   </li>   -->
+                                                    </ul>        
+                                                </div>
+                                            </div><!-- /.box-body -->
+                                        </div><!-- /.box -->
+                                    </div><!-- /.col -->
+                                </div>
+                            </div>
+                            <div class="row">                               
+                            </div>
+                        </section><!-- /.content -->
+                    </div><!-- /.content-wrapper -->
+                </div>  
+              
+          <footer  style=" border-top:none; color:#ffffff; background-color: #222d32;" class="main-footer">               
+                  <strong>System version 1.1-SNAPSHOT (2018-03-09T111:10)</strong>
+            </footer>           
+        </div><!-- ./wrapper -->
+        <!-- TEMPLATE JAVASCRIPT LIBRARIES -->
+        <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script> <!-- jQuery 2.1.4 -->
+        <script src="js/libs/jquery-ui.min.js"></script> <!-- jQuery UI 1.11.4 -->        
+        <script src="css/libs/bootstrap/js/bootstrap.min.js"></script> <!-- Bootstrap 3.3.5 -->
+        <script src="plugins/knob/jquery.knob.js"></script> <!-- jQuery Knob Chart -->
+        <script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script> <!-- Bootstrap WYSIHTML5 -->
+        <script src="js/libs/template/app.min.js"></script>  <!-- AdminLTE App -->              
+        <script type="text/javascript" src="js/scripts.js"></script>         
+        <script src="plugins/jq-treeview/jquery.treeview.js"></script>  <!-- treeview.js -->
+        <script src="plugins/jq-treeview/jquery.treeview.edit.js"></script>                      
+    </body>
+</html>
