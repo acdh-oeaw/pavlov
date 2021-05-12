@@ -19,7 +19,7 @@
         <!-- selects the appender for the log4j root logger -->
         <log4j.appender>File</log4j.appender>
         <vlo.logging.level>INFO</vlo.logging.level>
-        <solr.version>7.1.0</solr.version>
+        <solr.version>8.8.2</solr.version>
         <slf4j.version>1.7.25</slf4j.version>
         <saxon.version>9.5.1-8</saxon.version>
         
